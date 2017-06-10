@@ -5,22 +5,22 @@ using UnityEngine;
 public class Key : MonoBehaviour 
 {
     //Create a reference to the KeyPoofPrefab and Door
-	public GameObject key;
+	public GameObject clickedObject;
 	public GameObject poofReference;
 	private GameObject poofObject;
+    public Door door;
 
-	void Update()
-	{
-		//Not required, but for fun why not try adding a Key Floating Animation here :)
-	}
+    public void Update()
+    {
+        if (poofObject == null)
+             clickedObject.transform.Rotate(0, 0, Time.deltaTime * 20);
+    }
 
-	public void OnKeyClicked()
+    public void OnKeyClicked()
 	{
-        // Instatiate the KeyPoof Prefab where this key is located
-        // Make sure the poof animates vertically
-        // Call the Unlock() method on the Door
-        // Set the Key Collected Variable to true
-        // Destroy the key. Check the Unity documentation on how to use Destroy
+        poofObject = Object.Instantiate(poofReference, clickedObject.transform.position, Quaternion.Euler(0, 0, -90)) as GameObject;
+        door.Unlock();
+        Object.Destroy(clickedObject);
     }
 
 }

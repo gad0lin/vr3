@@ -2,25 +2,42 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Door : MonoBehaviour 
+public class Door : MonoBehaviour
 {
-    // Create a boolean value called "locked" that can be checked in OnDoorClicked() 
-    // Create a boolean value called "opening" that can be checked in Update() 
+    public AudioSource audioSource;
+    public AudioClip doorLockedSound;
+    public AudioClip doorOpenSound;
+    private bool locked = true;
+    private bool opening = false;
+    private float startTime;
+    private float journeyLength;
+   
+
 
     void Update() {
-        // If the door is opening and it is not fully raised
-            // Animate the door raising up
+        if (opening) {
+          transform.position = Vector3.Slerp(new Vector3(0,0,0), new Vector3(0, 8, 0), (Time.time - startTime)/10 );
+        }
     }
 
-    public void OnDoorClicked() {
-        // If the door is clicked and unlocked
-            // Set the "opening" boolean to true
-        // (optionally) Else
-            // Play a sound to indicate the door is locked
+    public void OnDoorClicked() { 
+
+        if (locked)
+        {
+            audioSource.clip = doorLockedSound;
+
+        }  else
+        {
+            audioSource.clip = doorOpenSound;
+            opening = true;
+            startTime = Time.time;
+            
+        }
+        audioSource.Play();
     }
 
     public void Unlock()
     {
-        // You'll need to set "locked" to false here
+        locked = false;
     }
 }
